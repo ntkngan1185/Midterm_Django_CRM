@@ -1,0 +1,49 @@
+{% extends 'accounts/main.html' %} 
+<!-- template kế thừa, kéo dài của main.html-->
+
+{% block content %} <!-- nội dung được chứa trong khối content -->
+
+{% include 'accounts/status.html' %}
+
+<div class="row"> <!-- 1 row with 12 of cols-->
+	<div class="col-md-5"> <!-- 5 / 12 col-->
+		<h5>CUSTOMERS:</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="">Create Customer</a>
+			<table class="table table-sm">
+				<tr>
+					<th></th>
+					<th>Customer</th>
+					<th>Orders</th>
+				</tr>
+
+			</table>
+		</div>
+	</div>
+
+	<div class="col-md-7"> < <!-- 7/12 col -->
+		<h5>LAST 5 ORDERS</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="">Create Order</a>
+			<table class="table table-sm">
+				<tr>
+					<th>Product</th>
+					<th>Date Orderd</th>
+					<th>Status</th>
+					<th>Update</th>
+					<th>Remove</th>
+				</tr>
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+
+
+
+
