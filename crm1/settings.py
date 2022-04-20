@@ -118,6 +118,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static') #chỉ ra đường link dẫn đến thư mục static 
+# ]
+
+MEDIA_URL = '/img/' # link dan den thu muc chua cac file hinh anh va video
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
