@@ -28,8 +28,10 @@ def customer(request, pk_test):
 	orders = customer.order_set.all()
 	order_count = orders.count()
 
-	myFilter = OrderFilter()
+	myFilter = OrderFilter(request.GET, queryset=orders)  #request.get send request data to this view
+														#query tất cả order
 
+	orders = myFilter.qs  #orders từ filter trả về 
 	context = {'customer':customer,'orders':orders,'order_count':order_count,'myFilter':myFilter}
 	return render(request,'accounts/customer.html',context)
  
