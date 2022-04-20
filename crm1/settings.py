@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -118,9 +119,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static') #chỉ ra đường link dẫn đến thư mục static 
-# ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static') #chỉ ra đường link dẫn đến thư mục static 
+]
 
 MEDIA_URL = '/img/' # link dan den thu muc chua cac file hinh anh va video
 
