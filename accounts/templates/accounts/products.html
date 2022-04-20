@@ -18,6 +18,16 @@
 						<th>Price</th>
 					</tr>
 					
+					<!--them gia tri dynamic-->  <!--products là tham số được truyền vào, lấy từ file views.py-->
+						
+					{% for i in products %} 
+						<tr>  <!--create new row with 3 column in it-->
+							<td>{{i.name}}</td>
+							<td>{{i.category}}</td>
+							<td>{{i.price}}</td>
+						</tr> 
+						
+					{% endfor %}
 				</table>
 			</div>
 		</div>
