@@ -25,12 +25,7 @@ def registerPage(request):
 			user = form.save()
 			username = form.cleaned_data.get('username') #get username and not get any atts
 			
-			group = Group.objects.get(name='customer')
-			user.groups.add(group)
-			Customer.objects.create(
-				user = user,
-				name=user.username,
-			)
+			
 
 			messages.success(request, 'Account was created for ' + username)
 			return redirect('login')
