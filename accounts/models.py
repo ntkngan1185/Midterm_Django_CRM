@@ -4,11 +4,11 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Customer(models.Model): # để thêm customer vào db thì cần chạy lệnh makemigrations (python manage.py makemigrations)
 								#chỉ là bước đầu, để hoàn thiện quá trình thêm vào db cần chạy python manage.py migrate
-	user = models.OneToOneField(User, related_name = 'customer', null=True, on_delete=models.CASCADE)
+	user = models.OneToOneField(User, related_name = 'customer',blank=True, null=True, on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True) #cho phep gia tri null
 	phone = models.CharField(max_length=200,null=True)
 	email = models.CharField(max_length=200,null=True)
-	profile_pic = models.ImageField(null=True, blank=True)
+	profile_pic = models.ImageField(default = 'default_avatar.jpg',null=True, blank=True) #vì đã tạo đường dẫn media root trong urls trỏ đến thư mục static/img nên chỉ cần dẫn link hình ảnh trực tiếp
 	date_created = models.DateTimeField(auto_now_add = True,null=True)
 
 	def __str__(self):  #hiện tên của object customer trên admin panel

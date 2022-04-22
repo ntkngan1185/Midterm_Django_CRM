@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from .models import *
-from .forms import OrderForm, CreateUserForm
+from .forms import OrderForm, CreateUserForm, CustomerForm
 from .filters import OrderFilter 
 from .decorators import unauthenticated_user, admin_only, allowed_user
 
@@ -18,7 +18,6 @@ from .decorators import unauthenticated_user, admin_only, allowed_user
 #demo9 - final1234
 @unauthenticated_user
 def registerPage(request):
-	
 	form = CreateUserForm()
 	if request.method == 'POST':
 		form = CreateUserForm(request.POST)
@@ -73,6 +72,21 @@ def userPage(request):
 	print('ORDERS:' , orders)
 	context ={'orders':orders,'total_orders':total_orders,'delivered':delivered, 'pending':pending}
 	return render(request,'accounts/user.html',context)
+
+
+@login_required(login_url='login') #dđặt trước những view muốn hạn chế truy cập, thay vào đó sẽ đi đến trang login
+@allowed_user(allowed_roles=['customer'])
+def accountSettings(request):
+	customer = request.user.customer
+	form = CustomerForm(instance=customer)
+
+	if request.method == 'POST':
+		form = CustomerForm(request.POST, request.FILES, instance=customer)
+		if form.is_valid():
+			form.save()
+			
+	context={'form':form}
+	return render(request,'accounts/account_setting.html',context)
 
 
 @login_required(login_url='login') #dđặt trước những view muốn hạn chế truy cập, thay vào đó sẽ đi đến trang login
