@@ -11,34 +11,34 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import OrderForm, CreateUserForm
 from .filters import OrderFilter 
-from .decorators import unauthenticated_user, admin_only
+from .decorators import unauthenticated_user, admin_only, allowed_user
 
 
 # kiwine - midterm2022
 #demo9 - final1234
 @unauthenticated_user
 def registerPage(request):
-	if request.user.is_authenticated:
-		return redirect('home')
-	else:
-		form = CreateUserForm()
+	
+	form = CreateUserForm()
+	if request.method == 'POST':
+		form = CreateUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			username = form.cleaned_data.get('username') #get username and not get any atts
+			
+			group = Group.objects.get(name='customer')
+			user.groups.add(group)
+			Customer.objects.create(
+				user = user,
+				name=user.username,
+			)
 
-		if request.method == 'POST':
-			form = CreateUserForm(request.POST)
-			if form.is_valid():
-				user = form.save()
-				username = form.cleaned_data.get('username') #get username and not get any atts
-				
-				group = Group.objects.get(name='customer')
+			messages.success(request, 'Account was created for ' + username)
+			return redirect('login')
 
-				user.groups.add(group)
+	context = {'form':form}
 
-				messages.success(request, 'Account was created for ' + user)
-				return redirect('login')
-
-		context = {'form':form}
-
-		return render(request,'accounts/register.html',context)
+	return render(request,'accounts/register.html',context)
 
 @unauthenticated_user #if user is authenticated thi se chuyen den home, neu k thif se chay trang login
 def loginPage(request):
@@ -61,9 +61,17 @@ def logoutUser(request):
 	logout(request)
 	return redirect('login')
 
-
+@login_required(login_url='login') #dđặt trước những view muốn hạn chế truy cập, thay vào đó sẽ đi đến trang login
+@allowed_user(allowed_roles=['customer'])
 def userPage(request):
-	context ={}
+	orders = request.user.customer.order_set.all()
+
+	total_orders = orders.count()
+	delivered = orders.filter(status='Delivered').count()
+	pending = orders.filter(status ='Pending').count()
+
+	print('ORDERS:' , orders)
+	context ={'orders':orders,'total_orders':total_orders,'delivered':delivered, 'pending':pending}
 	return render(request,'accounts/user.html',context)
 
 
@@ -83,13 +91,13 @@ def home(request):
 	return render(request,'accounts/dashboard.html',context) #render tới vị trí file dashboard.html
 
 @login_required(login_url='login')
-@admin_only #chi nhung user co role la admin thi moic co quyen truy cap vao home
+@allowed_user(allowed_roles=['admin']) #chi nhung user co role la admin thi moic co quyen truy cap vao home
 def products(request):
 	products = Product.objects.all() #truyen tham so dau vao
 	return render(request,'accounts/products.html',{'products':products})
 
 @login_required(login_url='login')
-@admin_only #chi nhung user co role la admin thi moic co quyen truy cap vao home
+@allowed_user(allowed_roles=['admin']) #chi nhung user co role la admin thi moic co quyen truy cap vao home
 def customer(request, pk_test):
 	customer = Customer.objects.get(id=pk_test)
 	orders = customer.order_set.all()
@@ -103,7 +111,7 @@ def customer(request, pk_test):
 	return render(request,'accounts/customer.html',context)
 
 @login_required(login_url='login')
-@admin_only #chi nhung user co role la admin thi moic co quyen truy cap vao home
+@allowed_user(allowed_roles=['admin']) #chi nhung user co role la admin thi moic co quyen truy cap vao home
 def createOrder(request, pk):
 	OrderFormSet = inlineformset_factory(Customer, Order, fields=('product','status'), extra=10) #extra=10 means create 10 forms in formset 
 	customer = Customer.objects.get(id=pk)
@@ -119,7 +127,7 @@ def createOrder(request, pk):
 	return render(request,'accounts/order_form.html',context)
 
 @login_required(login_url='login')
-@admin_only #chi nhung user co role la admin thi moic co quyen truy cap vao home
+@allowed_user(allowed_roles=['admin']) #chi nhung user co role la admin thi moic co quyen truy cap vao home
 def updateOrder(request, pk):
 	order = Order.objects.get(id=pk)
 	form = OrderForm(instance=order)
@@ -133,7 +141,7 @@ def updateOrder(request, pk):
 	return render(request,'accounts/order_form.html',context)
 
 @login_required(login_url='login')
-@admin_only #chi nhung user co role la admin thi moic co quyen truy cap vao home
+@allowed_user(allowed_roles=['admin']) #chi nhung user co role la admin thi moic co quyen truy cap vao home
 def deleteOrder(request, pk):
 	order = Order.objects.get(id=pk)
 	if request.method=="POST":
