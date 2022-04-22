@@ -133,3 +133,11 @@ MEDIA_URL = '/img/' # link dan den thu muc chua cac file hinh anh va video
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
+
+#SMTP Configuration
+EMAIL_BACKEND= 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS= True
+EMAIL_HOST_USER = 'ntkn.mnkt@gmail.com'
+EMAIL_HOST_PASSWORD = 'nhunghinhnhannhaymua'
