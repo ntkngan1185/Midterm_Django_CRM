@@ -6,20 +6,20 @@
 <div class="row">
 	<div class="col-md-6">
 		<div class="card card-body">
+
 			<form action="" method="POST">
 				{% csrf_token %}
-				{% for form in formset %}
-					{{ formset.management_form }} <!-- save each form individually -->
-					{{form}}
+				{{ form.management_form }}
+				{% for field in form %}
+					{{field}}
 					<hr>
-				{% endfor %} <!--truyên dữ liệu an toàn -->
-				<input type="submit" name="Submit">
+				{% endfor %}
 				
-
+				<input type="submit" name="Submit">
 			</form>
+
 		</div>
 	</div>
-
 </div>
 
 {% endblock %}

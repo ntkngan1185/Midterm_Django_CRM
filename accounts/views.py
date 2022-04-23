@@ -140,7 +140,7 @@ def createOrder(request, pk):
 def updateOrder(request, pk):
 	order = Order.objects.get(id=pk)
 	form = OrderForm(instance=order)
-	if request.method == "POST":	
+	if request.method == 'POST':	
 		form = OrderForm(request.POST, instance=order)  #thay vi create new item, thì sẽ lấy dữ liệu từ instance truyền vào
 		if form.is_valid(): 
 			form.save()
@@ -153,7 +153,7 @@ def updateOrder(request, pk):
 @allowed_user(allowed_roles=['admin']) #chi nhung user co role la admin thi moic co quyen truy cap vao home
 def deleteOrder(request, pk):
 	order = Order.objects.get(id=pk)
-	if request.method=="POST":
+	if request.method=='POST':
 		order.delete()
 		return redirect('/')
 
