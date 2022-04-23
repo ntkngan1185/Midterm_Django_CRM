@@ -132,7 +132,7 @@ def createOrder(request, pk):
 		if formset.is_valid(): #nếu form is valid thì save thông tin xuống db
 			formset.save()
 			return redirect('/') # save infomation into db, then back to home view and show new info
-	context = {'formset':formset}
+	context = {'form':formset}
 	return render(request,'accounts/order_form.html',context)
 
 @login_required(login_url='login')
@@ -147,7 +147,7 @@ def updateOrder(request, pk):
 			return redirect('/')  
 	context = {'form':form}
 
-	return render(request,'accounts/order_form.html',context)
+	return render(request,'accounts/update.html',context)
 
 @login_required(login_url='login')
 @allowed_user(allowed_roles=['admin']) #chi nhung user co role la admin thi moic co quyen truy cap vao home

@@ -12,7 +12,7 @@ class Customer(models.Model): # để thêm customer vào db thì cần cha�
 	date_created = models.DateTimeField(auto_now_add = True,null=True)
 
 	def __str__(self):  #hiện tên của object customer trên admin panel
-		return self.name
+		return str(self.name)
 
 class Tag(models.Model): 
 	name = models.CharField(max_length=200, null=True) #cho phep gia tri null
@@ -33,7 +33,7 @@ class Product(models.Model):
 	tags = models.ManyToManyField(Tag)
 
 	def __str__(self):  #hiện tên của object customer trên admin panel
-		return self.name
+		return str(self.name)
 
 
 class Order(models.Model):
@@ -51,4 +51,4 @@ class Order(models.Model):
 	note = models.CharField(max_length=1000, null=True)
 
 	def __str__(self):  #hiện tên của object customer trên admin panel
-		return self.product.name
+		return str(self.product.name)
